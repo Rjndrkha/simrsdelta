@@ -6,6 +6,12 @@ use Illuminate\Database\Eloquent\Model;
 
 class ActivityLog extends Model
 {
-    protected $fillable = ['user_id', 'action', 'description', 'before', 'after'];
-    protected $casts = ['before' => 'json', 'after' => 'json'];
+    protected $fillable = [
+        'user_id',
+        'action',
+        'model_type',
+        'model_id',
+        'before',
+        'after'
+    ];
 }

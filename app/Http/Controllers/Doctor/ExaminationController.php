@@ -34,7 +34,7 @@ class ExaminationController extends Controller
         $token = $apiService->getAuthToken();
         $medicines = $apiService->getMedicines($token);
 
-        return Inertia::render('Doctor/Examination', [
+        return Inertia::render('Doctor/CreateExamination', [
             'patients' => $patients,
             'medicines' => $medicines
         ]);
@@ -45,17 +45,17 @@ class ExaminationController extends Controller
         return DB::transaction(function () use ($request, $apiService) {
 
             $examination = Examination::create([
-                'patient_id' => $request->patient_id,
-                'doctor_id' => Auth::id(),
-                'examination_date' => now(),
-                'height' => $request->height,
-                'weight' => $request->weight,
-                'systole' => $request->systole,
-                'diastole' => $request->diastole,
-                'heart_rate' => $request->heart_rate,
+                'patient_id'       => $request->patient_id,
+                'doctor_id'        => Auth::id(),
+                'examination_date' => $request->examination_date,
+                'height'           => $request->height,
+                'weight'           => $request->weight,
+                'systole'          => $request->systole,
+                'diastole'         => $request->diastole,
+                'heart_rate'       => $request->heart_rate,
                 'respiration_rate' => $request->respiration_rate,
-                'temperature' => $request->temperature,
-                'doctor_notes' => $request->doctor_notes,
+                'temperature'      => $request->temperature,
+                'doctor_notes'     => $request->doctor_notes,
             ]);
 
 
@@ -66,9 +66,9 @@ class ExaminationController extends Controller
 
             $prescription = Prescription::create([
                 'examination_id' => $examination->id,
-                'status' => 'pending',
+                'status'         => 'pending',
+                'total_price'    => 0,
             ]);
-
 
             $token = $apiService->getAuthToken();
             $totalPrice = 0;
@@ -77,25 +77,24 @@ class ExaminationController extends Controller
 
                 $prices = $apiService->getMedicinePrice($token, $item['medicine_id']);
 
-
                 $unitPrice = $this->calculatePriceAtDate($prices, $examination->examination_date);
 
                 PrescriptionItem::create([
                     'prescription_id' => $prescription->id,
-                    'medicine_id' => $item['medicine_id'],
-                    'medicine_name' => $item['medicine_name'],
-                    'quantity' => $item['quantity'],
-                    'unit_price' => $unitPrice,
-                    'instruction' => $item['instruction'],
+                    'medicine_id'     => $item['medicine_id'],
+                    'medicine_name'   => $item['medicine_name'],
+                    'quantity'        => $item['quantity'],
+                    'unit_price'      => $unitPrice,
+                    'instruction'     => $item['instruction'],
                 ]);
 
                 $totalPrice += ($unitPrice * $item['quantity']);
             }
 
-
             $prescription->update(['total_price' => $totalPrice]);
 
-            return redirect()->back()->with('message', 'Pemeriksaan dan Resep berhasil disimpan.');
+            return redirect()->route('doctor.dashboard')
+                ->with('message', 'Pemeriksaan dan Resep berhasil disimpan.');
         });
     }
 

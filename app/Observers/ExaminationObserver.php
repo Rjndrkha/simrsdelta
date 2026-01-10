@@ -4,6 +4,7 @@ namespace App\Observers;
 
 use App\Models\ActivityLog;
 use App\Models\Examination;
+use Illuminate\Support\Facades\Auth;
 
 class ExaminationObserver
 {
@@ -12,19 +13,21 @@ class ExaminationObserver
      */
     public function created(Examination $examination): void
     {
-        ActivityLog::create([
-            'user_id' => auth()->user_id,
-            'action' => 'CREATE',
-            'model_type' => 'Examination',
-            'model_id' => $examination->id,
-            'after' => $examination->toJson(),
-        ]);
+        if (Auth::check()) {
+            ActivityLog::create([
+                'user_id' => Auth::id(),
+                'action' => 'CREATE',
+                'model_type' => 'Examination',
+                'model_id' => $examination->id,
+                'after' => $examination->toJson(),
+            ]);
+        }
     }
 
     public function updated(Examination $examination): void
     {
         ActivityLog::create([
-            'user_id' => auth()->user_id,
+            'user_id' => Auth::id(),
             'action' => 'UPDATE',
             'model_type' => 'Examination',
             'model_id' => $examination->id,
