@@ -14,7 +14,12 @@ class PharmacistController extends Controller
 {
     public function index()
     {
-        $prescriptions = Prescription::with(['examination.patient', 'examination.doctor'])
+
+        $prescriptions = Prescription::with([
+            'examination.patient',
+            'examination.doctor',
+            'items'
+        ])
             ->orderBy('created_at', 'desc')
             ->get();
 
@@ -34,15 +39,13 @@ class PharmacistController extends Controller
 
         DB::transaction(function () use ($prescription) {
 
-            $user = optional(Auth::user())->id;
-
             $prescription->update([
                 'status' => 'completed',
-                'pharmacist_id' => $user->id,
+                'pharmacist_id' => Auth::id(),
             ]);
 
             ActivityLog::create([
-                'user_id' => optional(Auth::user())->id,
+                'user_id' => Auth::id(),
                 'action' => 'PAYMENT_COMPLETED',
                 'model_type' => 'Prescription',
                 'model_id' => $prescription->id,

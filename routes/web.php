@@ -21,7 +21,6 @@ Route::get('/dashboard', function () {
 
 
 Route::middleware(['auth', 'role:doctor'])->group(function () {
-
     Route::get('/doctor/dashboard', [ExaminationController::class, 'index'])->name('doctor.dashboard');
     Route::get('/doctor/examination', [ExaminationController::class, 'create'])->name('doctor.exam.create');
     Route::post('/doctor/examination', [ExaminationController::class, 'store'])->name('doctor.exam.store');
