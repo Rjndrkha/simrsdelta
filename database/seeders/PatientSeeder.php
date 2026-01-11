@@ -17,27 +17,17 @@ class PatientSeeder extends Seeder
             [
                 'name' => 'Budi Santoso',
                 'gender' => 'L',
+                'nik' => '1234567890123456',
                 'birth_date' => '1985-05-20',
                 'address' => 'Jl. Mawar No. 12, Sidoarjo',
             ],
             [
                 'name' => 'Siti Aminah',
                 'gender' => 'P',
+                'nik' => '6543210987654321',
                 'birth_date' => '1992-08-15',
                 'address' => 'Perum Delta Surya Blok A1, Sidoarjo',
-            ],
-            [
-                'name' => 'Andi Wijaya',
-                'gender' => 'L',
-                'birth_date' => '2000-01-10',
-                'address' => 'Jl. Gajah Mada No. 45, Surabaya',
-            ],
-            [
-                'name' => 'Lestari Putri',
-                'gender' => 'P',
-                'birth_date' => '1978-12-30',
-                'address' => 'Kec. Buduran, Sidoarjo',
-            ],
+            ]
         ];
 
         foreach ($patients as $patient) {

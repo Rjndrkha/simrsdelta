@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->enum('gender', ['L', 'P']);
+            $table->string('nik')->unique();
             $table->date('birth_date');
             $table->text('address')->nullable();
             $table->timestamps();

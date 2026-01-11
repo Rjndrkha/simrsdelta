@@ -36,6 +36,15 @@ export default function AuthenticatedLayout({ children }) {
             : [
                   {
                       key: "1",
+                      icon: <UserOutlined />,
+                      label: (
+                          <Link href="/pharmacist/patients">
+                              Manajemen Pasien
+                          </Link>
+                      ),
+                  },
+                  {
+                      key: "2",
                       icon: <ShoppingOutlined />,
                       label: (
                           <Link href="/pharmacist/dashboard">
