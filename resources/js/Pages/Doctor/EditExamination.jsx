@@ -70,8 +70,10 @@ export default function EditExamination({ patients, medicines, examination }) {
         <AuthenticatedLayout>
             <Head title="Pemeriksaan Baru" />
 
-            <div className="bg-white w-full h-full p-5 ">
-                <Title level={2}>Edit Pemeriksaan & Resep</Title>
+            <div className="bg-white w-full h-full p-2 md:p-5">
+                <Title level={2} className="text-lg md:text-2xl mb-4">
+                    Edit Pemeriksaan & Resep
+                </Title>
 
                 <Form
                     layout="vertical"
@@ -81,6 +83,7 @@ export default function EditExamination({ patients, medicines, examination }) {
                     <Card
                         title="1. Identitas Pasien"
                         className="shadow-sm mb-6"
+                        bodyStyle={{ padding: "16px" }}
                     >
                         <Form.Item
                             label="Pilih Pasien"
@@ -110,7 +113,11 @@ export default function EditExamination({ patients, medicines, examination }) {
                                 className="mt-4"
                                 type="info"
                                 message={
-                                    <Descriptions column={2} size="small">
+                                    <Descriptions
+                                        column={1}
+                                        size="small"
+                                        className="md:column-2"
+                                    >
                                         <Descriptions.Item label="Nama">
                                             {selectedPatient.name}
                                         </Descriptions.Item>
@@ -140,6 +147,7 @@ export default function EditExamination({ patients, medicines, examination }) {
                     <Card
                         title="2. Tanda-tanda Vital"
                         className="shadow-sm mb-6"
+                        bodyStyle={{ padding: "16px" }}
                     >
                         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                             <Form.Item
@@ -147,6 +155,7 @@ export default function EditExamination({ patients, medicines, examination }) {
                                 required
                                 help={errors.height}
                                 validateStatus={errors.height ? "error" : ""}
+                                className="w-full"
                             >
                                 <InputNumber
                                     className="w-full"
@@ -159,6 +168,7 @@ export default function EditExamination({ patients, medicines, examination }) {
                                 required
                                 help={errors.weight}
                                 validateStatus={errors.weight ? "error" : ""}
+                                className="w-full"
                             >
                                 <InputNumber
                                     className="w-full"
@@ -173,11 +183,12 @@ export default function EditExamination({ patients, medicines, examination }) {
                                 validateStatus={
                                     errors.temperature ? "error" : ""
                                 }
+                                className="w-full"
                             >
                                 <InputNumber
                                     className="w-full"
                                     step={0.1}
-                                    value={data.temperature} // <-- Tambahkan ini
+                                    value={data.temperature}
                                     onChange={(v) => setData("temperature", v)}
                                 />
                             </Form.Item>
@@ -190,6 +201,7 @@ export default function EditExamination({ patients, medicines, examination }) {
                                 label="Systole"
                                 required
                                 help={errors.systole}
+                                className="w-full"
                             >
                                 <InputNumber
                                     className="w-full"
@@ -201,6 +213,7 @@ export default function EditExamination({ patients, medicines, examination }) {
                                 label="Diastole"
                                 required
                                 help={errors.diastole}
+                                className="w-full"
                             >
                                 <InputNumber
                                     className="w-full"
@@ -212,6 +225,7 @@ export default function EditExamination({ patients, medicines, examination }) {
                                 label="Heart Rate (bpm)"
                                 required
                                 help={errors.heart_rate}
+                                className="w-full"
                             >
                                 <InputNumber
                                     className="w-full"
@@ -223,6 +237,7 @@ export default function EditExamination({ patients, medicines, examination }) {
                                 label="Resp. Rate"
                                 required
                                 help={errors.respiration_rate}
+                                className="w-full"
                             >
                                 <InputNumber
                                     className="w-full"
@@ -253,15 +268,15 @@ export default function EditExamination({ patients, medicines, examination }) {
                         {(fields, { add, remove }) => (
                             <>
                                 {fields.map(({ key, name, ...restField }) => (
-                                    <Space
+                                    <div
                                         key={key}
-                                        align="baseline"
-                                        className="bg-gray-50 p-4 mb-2 flex"
+                                        className="flex flex-col md:flex-row md:items-end bg-gray-50 p-4 mb-2 gap-2"
                                     >
                                         <Form.Item
                                             {...restField}
                                             label="Nama Obat"
                                             required
+                                            className="flex-1 min-w-0"
                                         >
                                             <Select
                                                 showSearch
@@ -306,9 +321,11 @@ export default function EditExamination({ patients, medicines, examination }) {
                                             {...restField}
                                             label="Qty"
                                             required
+                                            className="flex-1 min-w-0"
                                         >
                                             <InputNumber
                                                 min={1}
+                                                className="w-full"
                                                 value={
                                                     data.medicines[name]
                                                         ?.quantity
@@ -330,6 +347,7 @@ export default function EditExamination({ patients, medicines, examination }) {
                                             {...restField}
                                             label="Instruksi"
                                             required
+                                            className="flex-1 min-w-0"
                                         >
                                             <Input
                                                 value={
@@ -350,7 +368,10 @@ export default function EditExamination({ patients, medicines, examination }) {
                                             />
                                         </Form.Item>
 
-                                        <MinusCircleOutlined
+                                        <Button
+                                            type="text"
+                                            icon={<MinusCircleOutlined />}
+                                            danger
                                             onClick={() => {
                                                 const current = [
                                                     ...data.medicines,
@@ -359,8 +380,9 @@ export default function EditExamination({ patients, medicines, examination }) {
                                                 setData("medicines", current);
                                                 remove(name);
                                             }}
+                                            className="self-end md:self-auto"
                                         />
-                                    </Space>
+                                    </div>
                                 ))}
 
                                 <Form.Item>
@@ -384,6 +406,7 @@ export default function EditExamination({ patients, medicines, examination }) {
                         block
                         icon={<SaveOutlined />}
                         loading={processing}
+                        className="mt-4"
                     >
                         Simpan Pemeriksaan Lengkap
                     </Button>

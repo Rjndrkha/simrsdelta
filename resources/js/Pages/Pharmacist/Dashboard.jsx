@@ -107,6 +107,11 @@ export default function Dashboard({ prescriptions }) {
                         dataSource={prescriptions}
                         columns={columns}
                         rowKey="id"
+                        scroll={{ x: 1000 }}
+                        pagination={{
+                            pageSize: 10,
+                            responsive: true,
+                        }}
                         expandable={{
                             expandedRowRender: (record) => (
                                 <div className="p-4 bg-gray-50 border rounded">

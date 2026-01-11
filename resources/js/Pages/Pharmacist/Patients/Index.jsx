@@ -54,24 +54,28 @@ export default function PatientIndex({ patients }) {
             <Head title="Manajemen Pasien" />
 
             <div className="bg-white w-full h-full p-5 ">
-                <Card
-                    title="Data Master Pasien"
-                    extra={
-                        <Button
-                            type="primary"
-                            icon={<UserAddOutlined />}
-                            onClick={() => setIsModalOpen(true)}
-                        >
-                            Tambah Pasien
-                        </Button>
-                    }
-                >
-                    <Table
-                        dataSource={patients}
-                        columns={columns}
-                        rowKey="id"
-                    />
-                </Card>
+                <div>
+                    <h1 className="text-lg font-semibold">Manajemen Pasien</h1>
+                    <Button
+                        type="primary"
+                        icon={<UserAddOutlined />}
+                        onClick={() => setIsModalOpen(true)}
+                        size="small"
+                    >
+                        Tambah Pasien
+                    </Button>
+                </div>
+
+                <Table
+                    dataSource={patients}
+                    columns={columns}
+                    rowKey="id"
+                    scroll={{ x: 1000 }}
+                    pagination={{
+                        pageSize: 10,
+                        responsive: true,
+                    }}
+                />
             </div>
 
             <Modal

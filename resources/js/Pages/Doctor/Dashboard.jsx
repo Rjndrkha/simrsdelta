@@ -74,6 +74,11 @@ export default function Dashboard({ history }) {
                         columns={columns}
                         rowKey="id"
                         locale={{ emptyText: "Belum ada riwayat pemeriksaan" }}
+                        scroll={{ x: 1000 }}
+                        pagination={{
+                            pageSize: 10,
+                            responsive: true,
+                        }}
                     />
                 </Card>
             </div>
