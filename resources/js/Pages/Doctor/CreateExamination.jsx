@@ -65,11 +65,10 @@ export default function CreateExamination({ patients, medicines }) {
         <AuthenticatedLayout>
             <Head title="Pemeriksaan Baru" />
 
-            <div className="max-w-5xl mx-auto py-6">
+            <div className="bg-white w-full h-full p-5 ">
                 <Title level={2}>Input Pemeriksaan & Resep</Title>
 
                 <Form layout="vertical" onFinish={submit}>
-                    {/* SEKSI 1: IDENTITAS PASIEN */}
                     <Card
                         title="1. Identitas Pasien"
                         className="shadow-sm mb-6"
@@ -128,7 +127,6 @@ export default function CreateExamination({ patients, medicines }) {
                         )}
                     </Card>
 
-                    {/* SEKSI 2: TANDA VITAL */}
                     <Card
                         title="2. Tanda-tanda Vital"
                         className="shadow-sm mb-6"
@@ -250,7 +248,6 @@ export default function CreateExamination({ patients, medicines }) {
                         </Form.Item>
                     </Card>
 
-                    {/* SEKSI 3: RESEP OBAT */}
                     <Card title="3. Resep Obat" className="shadow-sm mb-6">
                         <Form.List name="medicines">
                             {(fields, { add, remove }) => (

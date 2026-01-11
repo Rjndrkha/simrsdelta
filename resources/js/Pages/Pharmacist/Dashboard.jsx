@@ -95,7 +95,7 @@ export default function Dashboard({ prescriptions }) {
         <AuthenticatedLayout>
             <Head title="Apoteker - Antrean Resep" />
 
-            <div className="py-12 max-w-7xl mx-auto sm:px-6 lg:px-8">
+            <div className="bg-white w-full h-full p-5 ">
                 <div className="mb-6">
                     <Title level={2}>
                         <ShoppingCartOutlined /> Antrean Resep Obat

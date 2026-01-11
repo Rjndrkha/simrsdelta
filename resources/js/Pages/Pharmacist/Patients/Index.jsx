@@ -53,7 +53,7 @@ export default function PatientIndex({ patients }) {
         <AuthenticatedLayout>
             <Head title="Manajemen Pasien" />
 
-            <div className="py-12 max-w-7xl mx-auto sm:px-6 lg:px-8">
+            <div className="bg-white w-full h-full p-5 ">
                 <Card
                     title="Data Master Pasien"
                     extra={
@@ -74,7 +74,6 @@ export default function PatientIndex({ patients }) {
                 </Card>
             </div>
 
-            {/* Modal Tambah Pasien */}
             <Modal
                 title="Daftarkan Pasien Baru"
                 open={isModalOpen}

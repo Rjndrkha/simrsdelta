@@ -1,5 +1,6 @@
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
-import { Table, Card, Tag, Typography } from "antd";
+import { Table, Card, Tag, Typography, Space, Button } from "antd";
+import { router } from "@inertiajs/react";
 
 const { Title } = Typography;
 
@@ -26,25 +27,56 @@ export default function Dashboard({ history }) {
                 </Tag>
             ),
         },
+        {
+            title: "Aksi",
+            render: (_, record) => (
+                <div className="flex flex-col w-fit h-fit">
+                    {record.prescription?.status === "pending" && (
+                        <Button
+                            type="primary"
+                            ghost
+                            onClick={() =>
+                                router.get(route("doctor.exam.edit", record.id))
+                            }
+                        >
+                            Edit Resep
+                        </Button>
+                    )}
+                    <Tag
+                        color={
+                            record.prescription?.status === "completed"
+                                ? "green"
+                                : "orange"
+                        }
+                    >
+                        {record.prescription?.status === "completed"
+                            ? "Sudah Dilayani"
+                            : "Menunggu Apotek"}
+                    </Tag>
+                </div>
+            ),
+        },
     ];
 
     return (
         <AuthenticatedLayout>
-            <div className="mb-6">
-                <Title level={3}>Riwayat Pemeriksaan Pasien</Title>
-                <p className="text-gray-500">
-                    Daftar pemeriksaan yang telah Anda lakukan.
-                </p>
-            </div>
+            <div className="bg-white w-full h-full p-5 ">
+                <div className="mb-6">
+                    <Title level={3}>Riwayat Pemeriksaan Pasien</Title>
+                    <p className="text-gray-500">
+                        Daftar pemeriksaan yang telah Anda lakukan.
+                    </p>
+                </div>
 
-            <Card className="shadow-sm">
-                <Table
-                    dataSource={history}
-                    columns={columns}
-                    rowKey="id"
-                    locale={{ emptyText: "Belum ada riwayat pemeriksaan" }}
-                />
-            </Card>
+                <Card className="shadow-sm">
+                    <Table
+                        dataSource={history}
+                        columns={columns}
+                        rowKey="id"
+                        locale={{ emptyText: "Belum ada riwayat pemeriksaan" }}
+                    />
+                </Card>
+            </div>
         </AuthenticatedLayout>
     );
 }

@@ -4,13 +4,12 @@ use App\Http\Controllers\Doctor\ExaminationController;
 use App\Http\Controllers\Doctor\PrescriptionController;
 use App\Http\Controllers\Pharmacist\PatientController;
 use App\Http\Controllers\Pharmacist\PharmacistController;
+use App\Services\ExternalApiService;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return redirect()->route('login');
 });
-
-
 
 Route::get('/dashboard', function () {
     $user = Auth::user();
@@ -25,6 +24,9 @@ Route::middleware(['auth', 'role:doctor'])->group(function () {
     Route::get('/doctor/dashboard', [ExaminationController::class, 'index'])->name('doctor.dashboard');
     Route::get('/doctor/examination', [ExaminationController::class, 'create'])->name('doctor.exam.create');
     Route::post('/doctor/examination', [ExaminationController::class, 'store'])->name('doctor.exam.store');
+
+    Route::get('/doctor/examination/{id}/edit', [ExaminationController::class, 'edit'])->name('doctor.exam.edit');
+    Route::patch('/doctor/examination/{id}', [ExaminationController::class, 'update'])->name('doctor.exam.update');
 });
 
 Route::middleware(['auth', 'role:pharmacist'])->group(function () {

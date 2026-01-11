@@ -9,6 +9,7 @@ use App\Models\Patient;
 use App\Models\Prescription;
 use App\Models\PrescriptionItem;
 use App\Services\ExternalApiService;
+use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
@@ -96,6 +97,67 @@ class ExaminationController extends Controller
             return redirect()->route('doctor.dashboard')
                 ->with('message', 'Pemeriksaan dan Resep berhasil disimpan.');
         });
+    }
+
+    public function edit($id)
+    {
+        $examination = Examination::with(['patient', 'prescription.items'])->findOrFail($id);
+
+
+        $apiService = new \App\Services\ExternalApiService();
+        $token = $apiService->getAuthToken();
+        $medicines = $apiService->getMedicines($token);
+
+        return Inertia::render('Doctor/EditExamination', [
+            'examination' => $examination,
+            'patients' => Patient::all(),
+            'medicines' => $medicines,
+        ]);
+    }
+
+    public function update(Request $request, $id)
+    {
+        $examination = Examination::findOrFail($id);
+
+        if ($examination->prescription->status === 'completed') {
+            return back()->with('error', 'Gagal: Resep sudah dilayani.');
+        }
+
+        DB::transaction(function () use ($request, $examination) {
+
+            $examination->update([
+                'height' => $request->height,
+                'weight' => $request->weight,
+                'systole' => $request->systole,
+                'diastole' => $request->diastole,
+                'heart_rate' => $request->heart_rate,
+                'respiration_rate' => $request->respiration_rate,
+                'temperature' => $request->temperature,
+                'doctor_notes' => $request->doctor_notes,
+            ]);
+
+            $prescription = $examination->prescription;
+            $prescription->items()->delete();
+
+            $totalPrice = 0;
+            foreach ($request->medicines as $item) {
+
+                $unitPrice = $item['unit_price'] ?? 0;
+
+                $prescription->items()->create([
+                    'medicine_id' => $item['medicine_id'],
+                    'medicine_name' => $item['medicine_name'],
+                    'quantity' => $item['quantity'],
+                    'unit_price' => $unitPrice,
+                    'instruction' => $item['instruction'],
+                ]);
+                $totalPrice += ($unitPrice * $item['quantity']);
+            }
+
+            $prescription->update(['total_price' => $totalPrice]);
+        });
+
+        return redirect()->route('doctor.dashboard')->with('message', 'Pemeriksaan berhasil diperbarui.');
     }
 
     private function calculatePriceAtDate($prices, $date)

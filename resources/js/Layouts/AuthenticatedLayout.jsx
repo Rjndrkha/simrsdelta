@@ -86,7 +86,7 @@ export default function AuthenticatedLayout({ children }) {
                         </Button>
                     </Link>
                 </Header>
-                <Content className="m-4 p-6 bg-white rounded-lg shadow-md flex justify-center items-center">
+                <Content className="m-4 p-6 bg-black rounded-lg shadow-md flex justify-center items-center">
                     {children}
                 </Content>
             </Layout>
