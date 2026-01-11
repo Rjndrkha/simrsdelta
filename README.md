@@ -2,6 +2,7 @@
 
 Sistem Informasi Manajemen Rumah Sakit (SIMRS) sederhana yang dirancang untuk mengintegrasikan proses pemeriksaan dokter dan layanan farmasi/apoteker secara real-time. Aplikasi ini dibangun menggunakan stack modern **Laravel 11**, **Inertia.js**, **React**, dan **Ant Design**.
 
+### UI Documentation : https://github.com/Rjndrkha/simrsdelta/tree/main/screenshoot
 ---
 
 ## 🚀 Fitur Utama
